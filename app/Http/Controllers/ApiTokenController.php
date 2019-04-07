@@ -37,6 +37,8 @@ class ApiTokenController extends Controller
 	        $user->email = $fb_user->email;
 	        $user->name = $fb_user->name;
 	        $user->avatar = $fb_user->avatar;
+	        $user->provider = "facebook";
+	        $user->provider_id = $fb_user->id;
 	        
 	        $user_token = Str::random(60);
 	        $user->api_token = hash('sha256', $user_token);
