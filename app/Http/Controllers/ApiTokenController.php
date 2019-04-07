@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Socialite;
+use Illuminate\Support\Facades\Log;
 
 class ApiTokenController extends Controller
 {
@@ -17,12 +18,14 @@ class ApiTokenController extends Controller
     public function token(Request $request)
     {
         
-        //validate that their token matches the email that was posted
-        $user = Socialite::driver('facebook')->userFromToken($request->token);
+        Log::alert(json_encode($request));
         
-        if ($user->email != $request->email) {
-	        return ['error' => 'email/token mismtach'];
+        if (!isset($request->token)) {
+	        return ['error' => 'missing token'];
         }
+        
+        //get their profile info from their facebook token
+        $user = Socialite::driver('facebook')->userFromToken($request->token);
         
         $user_token = Str::random(60);
 
