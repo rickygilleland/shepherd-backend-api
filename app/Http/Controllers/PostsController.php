@@ -30,6 +30,10 @@ class PostsController extends Controller
 	public function add_post(Request $request)
 	{
 		
+		if ($request->content == '' || $request->content == null) {
+			return ['success' => false];
+		}
+		
 		$post = new \App\Post();
 		$post->content = $request->content;
 		$post->user_id = Auth::id();
