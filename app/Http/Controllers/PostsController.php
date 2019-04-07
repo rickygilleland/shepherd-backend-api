@@ -27,7 +27,7 @@ class PostsController extends Controller
 		
 	}    
 	
-	public function create_post(Request $request)
+	public function add_post(Request $request)
 	{
 		
 		$post = new \App\Post();
