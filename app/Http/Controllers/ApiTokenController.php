@@ -18,25 +18,33 @@ class ApiTokenController extends Controller
     public function token(Request $request)
     {
         
-        
-        
         if (!isset($request->token)) {
 	        return ['error' => 'missing token'];
         }
         
         //get their profile info from their facebook token
-        $user = Socialite::driver('facebook')->userFromToken($request->token);
+        $fb_user = Socialite::driver('facebook')->userFromToken($request->token);
         
-        Log::alert(json_encode($user));
+        //try to find the user
+        $user = \App\User::where('email' => $fb_user->email);
         
-        return ['user' => $user->email];
+        if ($user) {
+	        //return the token
+	        $user_token = $user->api_token;
+        } else {
+	        //generate a token and a new user
+	        $user = new \App\User();
+	        $user->email = $fb_user->email
+	        $user->name = $fb_user->name;
+	        $user->avatar = $fb_user->avatar;
+	        
+	        $user_token = Str::random(60);
+	        $user->api_token = hash('sha256', $user_token);
+	        
+	        $user->save();
+	        
+        }
         
-        $user_token = Str::random(60);
-
-        $request->user()->forceFill([
-            'api_token' => hash('sha256', $user_token),
-        ])->save();
-
         return ['token' => $user_token];
     }
 }
