@@ -25,3 +25,7 @@ Route::middleware('auth:api')->post('/posts', 'PostsController@get_posts', funct
 	
 });
 
+Route::middleware('auth:api')->post('/post/add', 'PostsController@add_post', function ($request) {
+	
+});
+
