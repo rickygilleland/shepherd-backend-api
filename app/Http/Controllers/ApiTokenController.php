@@ -18,7 +18,7 @@ class ApiTokenController extends Controller
     public function token(Request $request)
     {
         
-        Log::alert(json_encode($request));
+        Log::alert(json_encode($request->token));
         
         if (!isset($request->token)) {
 	        return ['error' => 'missing token'];
