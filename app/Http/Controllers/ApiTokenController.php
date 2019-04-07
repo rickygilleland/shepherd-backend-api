@@ -29,8 +29,12 @@ class ApiTokenController extends Controller
         $user = \App\User::where('email', $fb_user->email)->first();
         
         if ($user) {
-	        //return the token
-	        $user_token = $user->api_token;
+	        //refresh their token
+	        $user_token = Str::random(60);
+	        $user->api_token = hash('sha256', $user_token);
+	        
+	        $user->save();
+
         } else {
 	        //generate a token and a new user
 	        $user = new \App\User();
