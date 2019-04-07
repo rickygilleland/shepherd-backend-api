@@ -21,3 +21,7 @@ Route::middleware('auth:api')->post('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->post('/posts', 'PostsController@get_posts', function ($request) {
+	
+});
+
