@@ -27,7 +27,7 @@ class ApiTokenController extends Controller
         //get their profile info from their facebook token
         $user = Socialite::driver('facebook')->userFromToken($request->token);
         
-        Log::alert(json_encode($user->email));
+        Log::alert(json_encode($user));
         
         return ['user' => $user->email];
         
