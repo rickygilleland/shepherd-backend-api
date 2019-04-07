@@ -33,8 +33,8 @@ class PostsController extends Controller
 		$post = new \App\Post();
 		$post->content = $request->content;
 		$post->user_id = Auth::id();
-		$post->location_lat = '99';
-		$post->location_long = '99';
+		$post->location_lat = $request->location_lat;
+		$post->location_long = $request->location_long;
 		
 		
 		if ($post->save()) {
