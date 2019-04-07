@@ -26,6 +26,24 @@ class PostsController extends Controller
 		
 		
 	}    
+	
+	public function create_post(Request $request)
+	{
+		
+		$post = new \App\Post();
+		$post->content = $request->content;
+		$post->user_id = Auth::id();
+		$post->location_lat = '99';
+		$post->location_long = '99';
+		
+		
+		if ($post->save()) {
+			return ['success' => true];
+		}
+		
+		return ['success' => false];
+		
+	}
     
     
 }
