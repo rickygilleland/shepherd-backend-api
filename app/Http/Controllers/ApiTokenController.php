@@ -18,7 +18,7 @@ class ApiTokenController extends Controller
     public function token(Request $request)
     {
         
-        Log::alert(json_encode($request->token));
+        
         
         if (!isset($request->token)) {
 	        return ['error' => 'missing token'];
@@ -26,6 +26,8 @@ class ApiTokenController extends Controller
         
         //get their profile info from their facebook token
         $user = Socialite::driver('facebook')->userFromToken($request->token);
+        
+        Log::alert(json_encode($user->email));
         
         return ['user' => $user->email];
         
