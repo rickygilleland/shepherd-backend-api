@@ -27,6 +27,8 @@ class ApiTokenController extends Controller
         //get their profile info from their facebook token
         $user = Socialite::driver('facebook')->userFromToken($request->token);
         
+        return ['user' => $user->email];
+        
         $user_token = Str::random(60);
 
         $request->user()->forceFill([
