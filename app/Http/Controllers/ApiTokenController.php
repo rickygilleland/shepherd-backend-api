@@ -34,7 +34,7 @@ class ApiTokenController extends Controller
         } else {
 	        //generate a token and a new user
 	        $user = new \App\User();
-	        $user->email = $fb_user->email
+	        $user->email = $fb_user->email;
 	        $user->name = $fb_user->name;
 	        $user->avatar = $fb_user->avatar;
 	        
