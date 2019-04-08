@@ -27,7 +27,7 @@ class PostsController extends Controller
 			      * sin( radians( location_lat ) )
 			    )
 			  ) AS distance,
-			  content,
+			  content
 			  from posts
 			  HAVING distance < 2
 			");
