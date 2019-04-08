@@ -27,8 +27,10 @@ class PostsController extends Controller
 			      * sin( radians( location_lat ) )
 			    )
 			  ) AS distance,
-			  content
+			  content,
+			  avatar as user_avatar,
 			  from posts
+			  join users on users.id = posts.user_id
 			  HAVING distance < 2
 			");
 
