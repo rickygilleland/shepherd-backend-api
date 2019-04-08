@@ -18,7 +18,7 @@ class PostsController extends Controller
 		
 
 		$posts = DB::select("
-			  select id, (
+			  select posts.id, (
 			    6371 * acos (
 			      cos ( radians(".$request->location_lat.") )
 			      * cos( radians( location_lat ) )
