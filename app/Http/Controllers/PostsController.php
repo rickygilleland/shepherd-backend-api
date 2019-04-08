@@ -55,7 +55,7 @@ class PostsController extends Controller
 				
 				$hours_since_posting = round(($minutes_since_posting / 60), 0, PHP_ROUND_HALF_UP);
 				
-				$post->display_posted_time = $hours_since_posting . "h";
+				$post->display_posted_time = $minutes_since_posting . "h";
 				
 			}
 
