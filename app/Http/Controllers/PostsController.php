@@ -78,7 +78,7 @@ class PostsController extends Controller
 
 		}
 		
-		usort($posts, function ($a, $b) {return $a['votes'] < $b['votes'];});
+		usort($posts, function ($a, $b) {return $a->votes < $b->votes;});
 
 		return ['posts' => $posts];
 		
