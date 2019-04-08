@@ -77,6 +77,8 @@ class PostsController extends Controller
 			$post->votes = $total_votes;
 
 		}
+		
+		usort($posts, function ($a, $b) {return $a['votes'] < $b['votes'];});
 
 		return ['posts' => $posts];
 		
