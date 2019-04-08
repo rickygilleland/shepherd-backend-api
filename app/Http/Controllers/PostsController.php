@@ -60,6 +60,21 @@ class PostsController extends Controller
 				$post->display_posted_time = $hours_since_posting . "h";
 				
 			}
+			
+			//get all of the votes
+			$post_votes = \App\Vote::where('post_id', $post->id)->get();
+			
+			$total_votes = 0;
+			
+			foreach ($post_votes as $p_vote) {
+				if ($p_vote->is_vote_up == 1) {
+					$total_votes++;
+				} else {
+					$total_votes--;
+				}
+			}
+			
+			$post->votes = $total_votes;
 
 		}
 
