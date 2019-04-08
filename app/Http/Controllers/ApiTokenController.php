@@ -32,7 +32,6 @@ class ApiTokenController extends Controller
 	        //refresh their token
 	        $user_token = Str::random(60);
 	        $user->api_token = hash('sha256', $user_token);
-	        $user->name = $fb_user->user['first_name'];
 	        
 	        $user->save();
 
@@ -40,7 +39,7 @@ class ApiTokenController extends Controller
 	        //generate a token and a new user
 	        $user = new \App\User();
 	        $user->email = $fb_user->email;
-	        $user->name = $fb_user->user['first_name'];
+	        $user->name = $fb_user->name;
 	        $user->avatar = $fb_user->avatar;
 	        $user->provider = "facebook";
 	        $user->provider_id = $fb_user->id;
