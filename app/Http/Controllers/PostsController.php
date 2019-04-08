@@ -102,7 +102,7 @@ class PostsController extends Controller
 			
 		}
 		
-		if ($request->vote_type = "vote_up") {
+		if ($request->vote_type == "vote_up") {
 			$vote->is_vote_up = 1;
 			$vote->is_vote_down = 0;
 		} else {
