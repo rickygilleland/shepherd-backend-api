@@ -28,7 +28,8 @@ class PostsController extends Controller
 			    )
 			  ) AS distance,
 			  content,
-			  avatar as user_avatar
+			  avatar as user_avatar,
+			  users.name as user_name
 			  from posts
 			  join users on users.id = posts.user_id
 			  HAVING distance < 2
