@@ -48,16 +48,16 @@ class PostsController extends Controller
 			
 			if ($created_at > $hour_ago) {
 				//less than an hour ago, show the minutes since posting
-				$minutes_since_posting = ($created_at - time()) / 60000;
+				$minutes_since_posting = (time() - $created_at) / 60;
 				
 				$post->display_posted_time = $minutes_since_posting . " mins";
 			} else {
 				//more than an hour, show the number of hours since posting
-				$minutes_since_posting = ($created_at - time()) / 60000;
+				$minutes_since_posting = (time() - $created_at) / 60;
 				
 				$hours_since_posting = round(($minutes_since_posting / 60), 0, PHP_ROUND_HALF_UP);
 				
-				$post->display_posted_time = $hours_since_posting . "h";
+				$post->display_posted_time = $minutes_since_posting . "h";
 				
 			}
 
