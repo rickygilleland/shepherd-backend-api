@@ -17,7 +17,7 @@ class PostsController extends Controller
 		$twenty_four_hours_ago = strtotime("24 hours ago");
 		
 
-		$posts = DB::table('posts')->selectRaw("
+		$posts = DB::select("
 			  id, (
 			    6371 * acos (
 			      cos ( radians(".$request->location_lat.") )
@@ -28,14 +28,10 @@ class PostsController extends Controller
 			    )
 			  ) AS distance,
 			  content,
-			")->havingRaw("distance < 2")->get();
+			  from posts
+			  HAVING distance < 2
+			");
 
-		
-		foreach ($posts as &$post) {
-			unset($post->location_lat);
-			unset($post->location_long);
-		}	
-		
 		return ['posts' => $posts];
 		
 		
