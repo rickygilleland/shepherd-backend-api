@@ -28,7 +28,7 @@ class PostsController extends Controller
 			    )
 			  ) AS distance,
 			  content,
-			")->havingRaw("HAVING distance < 2")->get();
+			")->havingRaw("distance < 2")->get();
 
 		
 		foreach ($posts as &$post) {
