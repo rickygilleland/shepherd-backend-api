@@ -37,7 +37,7 @@ class PostsController extends Controller
 			
 		foreach ($posts as &$post) {
 			
-			$name = explode(' ', trim($post->name));
+			$name = explode(' ', trim($post->user_name));
 			$post->user_name = $name[0];
 			
 			//make the posted date stylized
