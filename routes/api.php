@@ -29,3 +29,9 @@ Route::middleware('auth:api')->post('/post', 'PostsController@add_post', functio
 	
 });
 
+
+Route::middleware('auth:api')->post('/vote', 'PostsController@vote', function ($request) {
+	
+});
+
+

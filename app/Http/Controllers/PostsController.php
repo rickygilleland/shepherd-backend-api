@@ -89,6 +89,38 @@ class PostsController extends Controller
 		return ['success' => false];
 		
 	}
+	
+	public function vote(Request $request)
+	{
+
+		//check if they have already voted for this post
+		$vote = \App\Vote::where('user_id', Auth::id())->where('post_id', $request->post_id)->first();		
+		
+		if (!$vote) {
+		
+			$vote = new \App\Vote();
+			
+		}
+		
+		if ($request->vote_type = "vote_up") {
+			$vote->is_vote_up = 1;
+			$vote->is_vote_down = 0;
+		} else {
+			$vote->is_vote_up = 0;
+			$vote->is_vote_down = 1;
+		}
+		
+		$vote->post_id = $request->post_id;
+		$vote->user_id = Auth::id();
+		
+		if ($vote->save()) {
+			return ['success' => true];
+		}
+		
+		return ['success' => false];
+		
+	}
+
     
     
 }
