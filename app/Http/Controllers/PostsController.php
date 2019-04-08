@@ -28,6 +28,7 @@ class PostsController extends Controller
 			    )
 			  ) AS distance,
 			  content,
+			  posts.created_at,
 			  avatar as user_avatar,
 			  users.name as user_name
 			  from posts
