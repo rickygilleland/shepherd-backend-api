@@ -90,11 +90,14 @@ class PostsController extends Controller
 			
 			$post->votes = $total_votes;
 			
-			$post->posted_by_current_user = false;
+			$post->posted_by_current_user = 0;
 			
 			if ($post->post_user_id == $post->user_id) {
-				$post->posted_by_current_user = true;
+				$post->posted_by_current_user = 1;
 			}
+			
+			//get comments count
+			$post->comments = \App\Comment::where('post_id', $post->id)->count();
 
 		}
 		
@@ -291,7 +294,10 @@ class PostsController extends Controller
 		$vote->user_id = Auth::id();
 		
 		if ($vote->save()) {
-			return ['success' => true];
+			//get total post votes
+			$votes = \App\Vote::where('post_id', $request->post_id)->count();
+			
+			return ['success' => true, 'total_votes' => $votes];
 		}
 		
 		return ['success' => false];
