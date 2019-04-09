@@ -37,7 +37,9 @@ class PostsController extends Controller
 			  content,
 			  posts.created_at,
 			  avatar as user_avatar,
-			  users.name as user_name
+			  users.name as user_name,
+			  users.id as user_id,
+			  posts.user_id as post_user_id
 			  from posts
 			  join users on users.id = posts.user_id
 			  HAVING distance < 5
@@ -84,6 +86,12 @@ class PostsController extends Controller
 			}
 			
 			$post->votes = $total_votes;
+			
+			$post->posted_by_current_user = false;
+			
+			if ($post->post_user_id == $post->user_id) {
+				$post->posted_by_current_user = true;
+			}
 
 		}
 		
@@ -97,6 +105,108 @@ class PostsController extends Controller
 		
 		
 	}    
+	
+	public function get_post(Request $request)
+	{
+		
+		if (!isset($request->post_id) || $request->post_id == '') {
+			return ['success' => false];
+		}		
+		
+		//get the post
+		$post = \App\Post::where('id', $request->post_id)->first();
+		
+		if (!$post) {
+			return ['success' => false];
+		}
+
+		//make the posted date stylized
+		$hour_ago = strtotime("-60 minutes");
+		
+		$created_at = strtotime($post->created_at);
+		
+		$post->created_at_epoch = $created_at;
+		
+		$minutes_since_posting = (time() - $created_at) / 60;
+		
+		if ($created_at > $hour_ago) {
+			//less than an hour ago, show the minutes since posting
+			$minutes_since_posting = round($minutes_since_posting, 0, PHP_ROUND_HALF_UP);
+			
+			$post->display_posted_time = $minutes_since_posting . " mins";
+		} else {
+			//more than an hour, show the number of hours since posting				
+			$hours_since_posting = round(($minutes_since_posting / 60), 0, PHP_ROUND_HALF_UP);
+			
+			$post->display_posted_time = $hours_since_posting . "h";
+			
+		}
+
+		//get all of the votes
+		$post_votes = \App\Vote::where('post_id', $post->id)->get();
+		
+		$total_votes = 0;
+		
+		foreach ($post_votes as $p_vote) {
+			if ($p_vote->is_vote_up == 1) {
+				$total_votes++;
+			} else {
+				$total_votes--;
+			}
+		}
+		
+		$post->votes = $total_votes;
+		
+		
+		return ['post' => $post];
+		
+		
+	}   
+	
+	public function get_post_comments(Request $request)
+	{
+		
+		//get all of the comments for this post
+		$comments = \App\Comment::where('post_id', $request->post_id)
+			->join('users', 'users.id', '=', 'comments.user_id')
+			->select('comments.*', 'users.avatar_url', 'users.name')
+			->get();
+			
+		if (!$comments) {
+			return ['success' => false];
+		}
+			
+		foreach ($comments as &$comment) {
+			$name = explode(' ', trim($comment->name));
+			$comment->user_name = $name[0];
+			
+			//make the posted date stylized
+			$hour_ago = strtotime("-60 minutes");
+			
+			$created_at = strtotime($comment->created_at);
+			
+			$comment->created_at_epoch = $created_at;
+			
+			$minutes_since_posting = (time() - $created_at) / 60;
+			
+			if ($created_at > $hour_ago) {
+				//less than an hour ago, show the minutes since posting
+				$minutes_since_posting = round($minutes_since_posting, 0, PHP_ROUND_HALF_UP);
+				
+				$comment->display_posted_time = $minutes_since_posting . " mins";
+			} else {
+				//more than an hour, show the number of hours since posting				
+				$hours_since_posting = round(($minutes_since_posting / 60), 0, PHP_ROUND_HALF_UP);
+				
+				$comment->display_posted_time = $hours_since_posting . "h";
+				
+			}
+		}
+
+		return ['comments' => $comments];
+		
+	} 
+
 	
 	public function add_post(Request $request)
 	{
