@@ -125,7 +125,7 @@ class PostsController extends Controller
 		
 		
 		$post->user_avatar = $post_user->avatar;
-		$post->user_name = $post_user->name,
+		$post->user_name = $post_user->name;
 		$post->user_id = $post_user->id;
 		
 		$name = explode(' ', trim($post->user_name));
