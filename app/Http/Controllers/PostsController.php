@@ -42,8 +42,11 @@ class PostsController extends Controller
 			  posts.user_id as post_user_id
 			  from posts
 			  join users on users.id = posts.user_id
+			  where posts.created_at >= now() - INTERVAL 1 DAY
 			  HAVING distance < 5
 			");
+			
+
 			
 		foreach ($posts as &$post) {
 			
