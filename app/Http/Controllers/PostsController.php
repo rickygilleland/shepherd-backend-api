@@ -119,6 +119,18 @@ class PostsController extends Controller
 		if (!$post) {
 			return ['success' => false];
 		}
+		
+		//get the user that posted the post
+		$post_user = \App\User::where('id', $post->user_id)->first();
+		
+		
+		$post->user_avatar = $post_user->avatar;
+		$post->user_name = $post_user->name,
+		$post->user_id = $post_user->id;
+		
+		$name = explode(' ', trim($post->user_name));
+		$post->user_name = $name[0];
+
 
 		//make the posted date stylized
 		$hour_ago = strtotime("-60 minutes");
