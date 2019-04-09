@@ -181,7 +181,7 @@ class PostsController extends Controller
 		//get all of the comments for this post
 		$comments = \App\Comment::where('post_id', $request->post_id)
 			->join('users', 'users.id', '=', 'comments.user_id')
-			->select('comments.*', 'users.avatar_url as user_avatar', 'users.id as user_id', 'users.name')
+			->select('comments.*', 'users.avatar as user_avatar', 'users.id as user_id', 'users.name')
 			->get();
 			
 		if (!$comments) {
