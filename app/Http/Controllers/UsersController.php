@@ -21,7 +21,7 @@ class UsersController extends Controller
 		}
 		
 		//get the number of posts for this user
-		$user_stats = new stdClass;
+		$user_stats = (object)[];
 		
 		$posts = \App\Post::where('user_id', $user->id)->get();
 		
@@ -58,7 +58,7 @@ class UsersController extends Controller
 		
 		$user_stats->score = $score;
 		
-		$returned_user = new stdClass;
+		$returned_user = (object)[];;
 		$returned_user->avatar = $user->avatar;
 		$returned_user->name = $user->name;
 		$returned_user->stats = $user_stats;
