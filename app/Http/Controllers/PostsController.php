@@ -295,9 +295,18 @@ class PostsController extends Controller
 		
 		if ($vote->save()) {
 			//get total post votes
-			$votes = \App\Vote::where('post_id', $request->post_id)->count();
+			$votes = \App\Vote::where('post_id', $request->post_id)->get();
 			
-			return ['success' => true, 'total_votes' => $votes];
+			$total_votes = 0;
+			foreach ($votes as $p_vote) {
+				if ($p_vote->is_vote_up) {
+					$total_votes++;
+				} else {
+					$total_votes--;
+				}
+			}
+			
+			return ['success' => true, 'total_votes' => $total_votes];
 		}
 		
 		return ['success' => false];
