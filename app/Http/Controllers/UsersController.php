@@ -14,7 +14,7 @@ class UsersController extends Controller
 	public function get_user(Request $request)
 	{
 		
-		$user = \App\Users::where('id', Auth::id())->first();
+		$user = \App\User::where('id', Auth::id())->first();
 		
 		if (!$user) {
 			return ['success' => false];
@@ -23,7 +23,7 @@ class UsersController extends Controller
 		//get the number of posts for this user
 		$user_stats = new stdClass();
 		
-		$posts = \App\Posts::where('user_id', $user->id)->get();
+		$posts = \App\Post::where('user_id', $user->id)->get();
 		
 		$user_stats->post_count = count($posts);
 		
@@ -31,7 +31,7 @@ class UsersController extends Controller
 		
 		foreach ($posts as $post) {
 			//get the votes for this
-			$post_votes = \App\Votes::where('post_id', $post->id)->get();
+			$post_votes = \App\Vote::where('post_id', $post->id)->get();
 			
 			foreach ($post_votes as $p_vote) {
 				if ($p_vote->is_vote_up) {
@@ -42,7 +42,7 @@ class UsersController extends Controller
 			}
 		}
 		
-		$votes = \App\Votes::where('user_id', $user->id)->count();
+		$votes = \App\Vote::where('user_id', $user->id)->count();
 		
 		$user_stats->vote_count = $votes;
 		
