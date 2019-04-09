@@ -16,6 +16,13 @@ class PostsController extends Controller
 
 		$twenty_four_hours_ago = strtotime("24 hours ago");
 		
+		
+		if (isset($request->sort)) {
+			if ($request->sort == "hot") {
+				
+			}
+		}
+		
 
 		$posts = DB::select("
 			  select posts.id, (
@@ -33,7 +40,7 @@ class PostsController extends Controller
 			  users.name as user_name
 			  from posts
 			  join users on users.id = posts.user_id
-			  HAVING distance < 2
+			  HAVING distance < 5
 			");
 			
 		foreach ($posts as &$post) {
@@ -45,6 +52,8 @@ class PostsController extends Controller
 			$hour_ago = strtotime("-60 minutes");
 			
 			$created_at = strtotime($post->created_at);
+			
+			$post->created_at_epoch = $created_at;
 			
 			$minutes_since_posting = (time() - $created_at) / 60;
 			
@@ -78,7 +87,11 @@ class PostsController extends Controller
 
 		}
 		
-		usort($posts, function ($a, $b) {return $a->votes < $b->votes;});
+		if (isset($request->sort) && $request->sort == "recent") {
+			usort($posts, function ($a, $b) {return $a->created_at_epoch < $b->created_at_epoch;});
+		} else {
+			usort($posts, function ($a, $b) {return $a->votes < $b->votes;});
+		}
 
 		return ['posts' => $posts];
 		
