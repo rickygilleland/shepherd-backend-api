@@ -181,7 +181,7 @@ class PostsController extends Controller
 		//get all of the comments for this post
 		$comments = \App\Comment::where('post_id', $request->post_id)
 			->join('users', 'users.id', '=', 'comments.user_id')
-			->select('comments.*', 'users.avatar_url', 'users.name')
+			->select('comments.*', 'users.avatar_url as user_avatar', 'users.id as user_id', 'users.name')
 			->get();
 			
 		if (!$comments) {
@@ -218,6 +218,28 @@ class PostsController extends Controller
 		return ['comments' => $comments];
 		
 	} 
+	
+	public function add_comment(Request $request)
+	{
+		
+		if ($request->content == '' || $request->content == null) {
+			return ['success' => false];
+		}
+		
+		$comment = new \App\Comment();
+		$comment->content = $request->content;
+		$comment->user_id = Auth::id();
+		$comment->post_id = $request->post_id;
+		$comment->status = 1;
+		
+		
+		if ($comment->save()) {
+			return ['success' => true];
+		}
+		
+		return ['success' => false];
+		
+	}
 
 	
 	public function add_post(Request $request)

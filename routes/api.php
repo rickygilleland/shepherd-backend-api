@@ -37,6 +37,11 @@ Route::middleware('auth:api')->post('/post/comments', 'PostsController@get_post_
 	
 });
 
+
+Route::middleware('auth:api')->post('/comment', 'PostsController@add_comment', function ($request) {
+	
+});
+
 Route::middleware('auth:api')->post('/vote', 'PostsController@vote', function ($request) {
 	
 });
