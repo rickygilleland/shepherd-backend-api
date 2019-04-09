@@ -31,7 +31,7 @@ class UsersController extends Controller
 		
 		foreach ($posts as $post) {
 			//get the votes for this
-			$post_votes = \App\Votes::where::('post_id', $post->id)->get();
+			$post_votes = \App\Votes::where('post_id', $post->id)->get();
 			
 			foreach ($post_votes as $p_vote) {
 				if ($p_vote->is_vote_up) {
