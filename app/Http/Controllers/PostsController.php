@@ -172,6 +172,12 @@ class PostsController extends Controller
 			$post->display_posted_time = $hours_since_posting . "h";
 			
 		}
+		
+		$post->posted_by_current_user = 0;
+			
+		if ($post->post_user_id == $post->user_id) {
+			$post->posted_by_current_user = 1;
+		}
 
 		//get all of the votes
 		$post_votes = \App\Vote::where('post_id', $post->id)->get();
@@ -179,11 +185,23 @@ class PostsController extends Controller
 		$total_votes = 0;
 		
 		foreach ($post_votes as $p_vote) {
+				
+			$post->voted_up_by_current_user = false;
+			$post->voted_down_by_current_user = false;
+			
 			if ($p_vote->is_vote_up == 1) {
 				$total_votes++;
+				if ($p_vote->user_id == Auth::id()) {
+					$post->voted_up_by_current_user = true;
+				}
 			} else {
 				$total_votes--;
+				
+				if ($p_vote->user_id == Auth::id()) {
+					$post->voted_down_by_current_user = true;
+				}
 			}
+			
 		}
 		
 		$post->votes = $total_votes;
@@ -201,6 +219,7 @@ class PostsController extends Controller
 		$comments = \App\Comment::where('post_id', $request->post_id)
 			->join('users', 'users.id', '=', 'comments.user_id')
 			->select('comments.*', 'users.avatar as user_avatar', 'users.id as user_id', 'users.name')
+			->orderBy('created_at', 'desc')
 			->get();
 			
 		if (!$comments) {
@@ -370,6 +389,52 @@ class PostsController extends Controller
 		return ['success' => true];
 		
 	}
+	
+	public function report_comment(Request $request)
+	{
+		
+		$comment = \App\Comment::where('id', $request->comment_id)->first();
+		
+		if (!$comment) {
+			return ['success' => false];
+		}
+		
+		$comment_report = new \App\CommentReport();
+		$comment_report->post_id = $request->post_id;
+		$comment_report->reporter_user_id = Auth::id();
+		$comment_report->post_author_user_id = $post->user_id;
+		$comment_report->report_reason = $request->report_reason;
+		
+		$comment_report->save();
+		
+		//if this post has received more than 5 reports, hide it
+		$all_comment_reports = \App\CommentReport::where('comment_id', $comment->id)->count();
+		
+		if ($all_comment_reports > 5) {
+			$comment->status = false;
+			$comment->save();
+		}
+		
+		return ['success' => true];
+		
+	}
+	
+	public function delete_comment(Request $request)
+	{
+		
+		$comment = \App\Post::where('id', $request->comment_id)->first();
+		
+		if (!$comment || $comment->user_id != Auth::id()) {
+			return ['success' => false];
+		}
+		
+		$comment->status = false;
+		$comment->delete();
+		
+		return ['success' => true];
+		
+	}
+
     
     
 }
