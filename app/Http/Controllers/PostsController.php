@@ -428,7 +428,7 @@ class PostsController extends Controller
 	public function delete_comment(Request $request)
 	{
 		
-		$comment = \App\Post::where('id', $request->comment_id)->first();
+		$comment = \App\Comment::where('id', $request->comment_id)->first();
 		
 		if (!$comment || $comment->user_id != Auth::id()) {
 			return ['success' => false];
