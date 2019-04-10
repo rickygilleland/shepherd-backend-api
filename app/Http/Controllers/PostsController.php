@@ -358,7 +358,7 @@ class PostsController extends Controller
 	public function delete_post(Request $request)
 	{
 		
-		$post = \App\Post::where('post_id', $request->post_id)->first();
+		$post = \App\Post::where('id', $request->post_id)->first();
 		
 		if (!$post || $post->user_id != Auth::id()) {
 			return ['success' => false];
