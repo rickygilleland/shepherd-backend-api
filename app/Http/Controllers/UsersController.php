@@ -58,7 +58,7 @@ class UsersController extends Controller
 		
 		$user_stats->score = $score;
 		
-		$comments = \App\Comments::where('user_id', $user->id)->count();
+		$comments = \App\Comment::where('user_id', $user->id)->count();
 		$user_stats->comments = $comments;
 		
 		$user_stats->daily_streak = 0;
