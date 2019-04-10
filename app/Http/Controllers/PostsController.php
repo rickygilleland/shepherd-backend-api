@@ -81,17 +81,23 @@ class PostsController extends Controller
 			$total_votes = 0;
 			
 			foreach ($post_votes as $p_vote) {
+				
+				$post->voted_up_by_current_user = false;
+				$post->voted_down_by_current_user = false;
+				
 				if ($p_vote->is_vote_up == 1) {
 					$total_votes++;
+					if ($p_vote->user_id == Auth::id()) {
+						$post->voted_up_by_current_user = true;
+					}
 				} else {
 					$total_votes--;
+					
+					if ($p_vote->user_id == Auth::id()) {
+						$post->voted_down_by_current_user = true;
+					}
 				}
 				
-				$post->voted_by_current_user = false;
-				
-				if ($p_vote->user_id == Auth::id()) {
-					$post->voted_by_current_user = true;
-				}
 			}
 			
 			$post->votes = $total_votes;
