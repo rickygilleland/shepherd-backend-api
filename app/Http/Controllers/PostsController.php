@@ -251,6 +251,12 @@ class PostsController extends Controller
 				$comment->display_posted_time = $hours_since_posting . "h";
 				
 			}
+			
+			$comment->posted_by_current_user = 0;
+			
+			if ($comment->user_id == Auth::id()) {
+				$comment->posted_by_current_user = 1;
+			}
 		}
 
 		return ['comments' => $comments];
