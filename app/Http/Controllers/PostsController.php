@@ -325,6 +325,50 @@ class PostsController extends Controller
 		
 	}
 
+	public function report_post(Request $request)
+	{
+		
+		$post = \App\Post::where('post_id', $request->post_id)->first();
+		
+		if (!$post) {
+			return ['success' => false];
+		}
+		
+		$post_report = new \App\PostReport();
+		$post_report->post_id = $request->post_id;
+		$post_report->reporter_user_id = Auth::id();
+		$post_report->post_author_user_id = $post->user_id;
+		$post_report->report_reason = $request->report_reason;
+		
+		$post_report->save();
+		
+		//if this post has received more than 5 reports, hide it
+		$all_post_reports = \App\PostReport::where('post_id', $post->id)->count();
+		
+		if ($all_post_reports > 5) {
+			$post->status = false;
+			$post->save();
+		}
+		
+		return ['success' => true];
+		
+	}
+	
+	public function delete_post(Request $request)
+	{
+		
+		$post = \App\Post::where('post_id', $request->post_id)->first();
+		
+		if (!$post || $post->user_id != Auth::id()) {
+			return ['success' => false];
+		}
+		
+		$post->status = false;
+		$post->delete();
+		
+		return ['success' => true];
+		
+	}
     
     
 }

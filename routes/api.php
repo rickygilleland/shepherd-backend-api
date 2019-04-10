@@ -33,6 +33,15 @@ Route::middleware('auth:api')->post('/post/get', 'PostsController@get_post', fun
 	
 });
 
+Route::middleware('auth:api')->post('/post/report', 'PostsController@report_post', function ($request) {
+	
+});
+
+Route::middleware('auth:api')->post('/post/delete', 'PostsController@delete_post', function ($request) {
+	
+});
+
+
 Route::middleware('auth:api')->post('/post/comments', 'PostsController@get_post_comments', function ($request) {
 	
 });
