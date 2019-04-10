@@ -86,6 +86,12 @@ class PostsController extends Controller
 				} else {
 					$total_votes--;
 				}
+				
+				$post->voted_by_current_user = false;
+				
+				if ($p_vote->user_id == Auth::id()) {
+					$post->voted_by_current_user = true;
+				}
 			}
 			
 			$post->votes = $total_votes;
