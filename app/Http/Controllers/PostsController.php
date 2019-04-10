@@ -329,7 +329,7 @@ class PostsController extends Controller
 	public function report_post(Request $request)
 	{
 		
-		$post = \App\Post::where('post_id', $request->post_id)->first();
+		$post = \App\Post::where('id', $request->post_id)->first();
 		
 		if (!$post) {
 			return ['success' => false];
