@@ -43,6 +43,7 @@ class PostsController extends Controller
 			  from posts
 			  join users on users.id = posts.user_id
 			  where posts.created_at >= now() - INTERVAL 1 DAY
+			  and posts.status = 1
 			  HAVING distance < 5
 			");
 			
