@@ -58,6 +58,11 @@ class UsersController extends Controller
 		
 		$user_stats->score = $score;
 		
+		$comments = \App\Comments::where('user_id', $user->id)->count();
+		$user_stats->comments = $comments;
+		
+		$user_stats->daily_streak = 0;
+		
 		$returned_user = (object)[];;
 		$returned_user->avatar = $user->avatar;
 		$returned_user->name = $user->name;
