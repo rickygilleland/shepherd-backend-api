@@ -400,7 +400,7 @@ class PostsController extends Controller
 		}
 		
 		$comment_report = new \App\CommentReport();
-		$comment_report->post_id = $request->post_id;
+		$comment_report->comment_id = $request->comment_id;
 		$comment_report->reporter_user_id = Auth::id();
 		$comment_report->post_author_user_id = $comment->user_id;
 		$comment_report->report_reason = $request->report_reason;
