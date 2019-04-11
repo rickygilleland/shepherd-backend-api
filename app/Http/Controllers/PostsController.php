@@ -103,10 +103,10 @@ class PostsController extends Controller
 			
 			$post->votes = $total_votes;
 			
-			$post->posted_by_current_user = 0;
+			$post->posted_by_current_user = false;
 			
-			if ($post->post_user_id == $post->user_id) {
-				$post->posted_by_current_user = 1;
+			if ($post->user_id ==Auth::id()) {
+				$post->posted_by_current_user = true;
 			}
 			
 			//get comments count
@@ -173,10 +173,10 @@ class PostsController extends Controller
 			
 		}
 		
-		$post->posted_by_current_user = 0;
+		$post->posted_by_current_user = false;
 			
-		if ($post->post_user_id == $post->user_id) {
-			$post->posted_by_current_user = 1;
+		if ($post->user_id ==Auth::id()) {
+			$post->posted_by_current_user = true;
 		}
 
 		//get all of the votes
