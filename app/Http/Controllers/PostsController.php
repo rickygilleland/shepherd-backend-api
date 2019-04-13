@@ -47,6 +47,9 @@ class PostsController extends Controller
 			  HAVING distance < 5
 			");
 			
+			
+			//get all of the abuse reports submitted by this user
+			$post_reports = \App\PostReport::where('reporter_user_id', Auth::id())->get();
 
 			
 		foreach ($posts as &$post) {
@@ -111,6 +114,14 @@ class PostsController extends Controller
 			
 			//get comments count
 			$post->comments = \App\Comment::where('post_id', $post->id)->count();
+			
+			//hide comments where user was previously reported
+			foreach ($post_reports as $p_report) {
+				if ($p_report->post_author_user_id == $comment->user_id && $comment->user_id != Auth::id()) {
+					//hide this comment from the current user because they previously reported them
+					unset($posts[$p_i]);
+				}
+			}
 
 		}
 		
@@ -219,14 +230,19 @@ class PostsController extends Controller
 		$comments = \App\Comment::where('post_id', $request->post_id)
 			->join('users', 'users.id', '=', 'comments.user_id')
 			->select('comments.*', 'users.avatar as user_avatar', 'users.id as user_id', 'users.name')
+			->where('comments.status', '=', '1')
 			->orderBy('created_at', 'desc')
 			->get();
 			
 		if (!$comments) {
 			return ['success' => false];
 		}
-			
-		foreach ($comments as &$comment) {
+		
+		//get all of the abuse reports submitted by this user
+		$comment_reports = \App\CommentReport::where('reporter_user_id', Auth::id())->get();
+
+		foreach ($comments as $c_i => &$comment) {
+
 			$name = explode(' ', trim($comment->name));
 			$comment->user_name = $name[0];
 			
@@ -256,6 +272,14 @@ class PostsController extends Controller
 			
 			if ($comment->user_id == Auth::id()) {
 				$comment->posted_by_current_user = 1;
+			}
+			
+			//hide comments where user was previously reported
+			foreach ($comment_reports as $c_report) {
+				if ($c_report->post_author_user_id == $comment->user_id && $comment->user_id != Auth::id()) {
+					//hide this comment from the current user because they previously reported them
+					unset($comments[$c_i]);
+				}
 			}
 		}
 
