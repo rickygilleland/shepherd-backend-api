@@ -300,6 +300,13 @@ class PostsController extends Controller
 		$comment->post_id = $request->post_id;
 		$comment->status = 1;
 		
+		//check if they have been reported recently
+		$post_reports = App\PostReport::where('post_author_user_id', Auth::id())->count();
+		
+		if ($post_reports > 5){
+			$post->status = false;
+		}
+		
 		
 		if ($comment->save()) {
 			return ['success' => true];
@@ -322,6 +329,14 @@ class PostsController extends Controller
 		$post->user_id = Auth::id();
 		$post->location_lat = $request->location_lat;
 		$post->location_long = $request->location_long;
+		$post->status = true;
+		
+		//check if they have been reported recently
+		$comment_reports = App\CommentReport::where('post_author_user_id', Auth::id())->count();
+		
+		if ($comment_reports > 5){
+			$comment->status = false;
+		}
 		
 		
 		if ($post->save()) {
