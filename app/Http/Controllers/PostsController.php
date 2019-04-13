@@ -117,7 +117,7 @@ class PostsController extends Controller
 			
 			//hide comments where user was previously reported
 			foreach ($post_reports as $p_report) {
-				if ($p_report->post_author_user_id == $comment->user_id && $comment->user_id != Auth::id()) {
+				if ($p_report->post_author_user_id == $post->user_id && $post->user_id != Auth::id()) {
 					//hide this comment from the current user because they previously reported them
 					unset($posts[$p_i]);
 				}
