@@ -301,7 +301,7 @@ class PostsController extends Controller
 		$comment->status = 1;
 		
 		//check if they have been reported recently
-		$comment_reports = App\CommentReport::where('post_author_user_id', Auth::id())->count();
+		$comment_reports = \App\CommentReport::where('post_author_user_id', Auth::id())->count();
 		
 		if ($comment_reports > 5){
 			$comment->status = false;
@@ -332,7 +332,7 @@ class PostsController extends Controller
 		$post->status = true;
 		
 		//check if they have been reported recently
-		$post_reports = App\PostReport::where('post_author_user_id', Auth::id())->count();
+		$post_reports = \App\PostReport::where('post_author_user_id', Auth::id())->count();
 		
 		if ($post_reports > 5){
 			$post->status = false;
