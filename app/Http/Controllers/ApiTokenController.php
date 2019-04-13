@@ -24,6 +24,11 @@ class ApiTokenController extends Controller
         
         //get their profile info from their facebook token
 		$fb_user = Socialite::driver('facebook')->userFromToken($request->token);
+		
+		//fall back on the facebook user id if the email field is null
+		if ($fb_user->email == null) {
+			$fb_user->email = $fb_user->id;
+		}
         
         //try to find the user
         $user = \App\User::where('email', $fb_user->email)->first();
