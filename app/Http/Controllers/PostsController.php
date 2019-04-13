@@ -370,11 +370,9 @@ class PostsController extends Controller
 		
 		//if this post has received more than 5 reports, hide it
 		$all_post_reports = \App\PostReport::where('post_id', $post->id)->count();
-		
-		if ($all_post_reports > 5) {
-			$post->status = false;
-			$post->save();
-		}
+			
+		$post->status = false;
+		$post->save();
 		
 		return ['success' => true];
 		
@@ -410,16 +408,15 @@ class PostsController extends Controller
 		$comment_report->reporter_user_id = Auth::id();
 		$comment_report->post_author_user_id = $comment->user_id;
 		$comment_report->report_reason = $request->report_reason;
-		
+
 		$comment_report->save();
 		
 		//if this post has received more than 5 reports, hide it
 		$all_comment_reports = \App\CommentReport::where('comment_id', $comment->id)->count();
 		
-		if ($all_comment_reports > 5) {
-			$comment->status = false;
-			$comment->save();
-		}
+		//shadow ban
+		$comment->status = false;
+		$comment->save();
 		
 		return ['success' => true];
 		
