@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Auth0\SDK\JWTVerifier;
+
 use Auth0\Login\Contract\Auth0UserRepository;
 use Auth0\SDK\Exception\CoreException;
 use Auth0\SDK\Exception\InvalidTokenException;
