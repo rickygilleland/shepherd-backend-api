@@ -1,15 +1,18 @@
 <?php
-// app/Http/Middleware/CheckJWT.php
-// ...
-use Auth0\SDK\JWTVerifier;
+
+namespace App\Http\Middleware;
+
+use Auth0\Login\Contract\Auth0UserRepository;
+use Auth0\SDK\Exception\CoreException;
+use Auth0\SDK\Exception\InvalidTokenException;
+use Closure;
 
 class CheckJWT {
 
     public function handle($request, Closure $next) {
-	    
-	    $accessToken = $request->bearerToken();        
+        $accessToken = $request->bearerToken();
         if (empty($accessToken)) {
-	        return ['error' => 'missing token'];
+            return response()->json(['message' => 'Bearer token missing'], 401);
         }
 
         $laravelConfig = config('laravel-auth0');
