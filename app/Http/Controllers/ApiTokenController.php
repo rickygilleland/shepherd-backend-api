@@ -22,6 +22,14 @@ class ApiTokenController extends Controller
 	        return ['error' => 'missing token'];
         }
         
+        //check if this is an auth0 token, or a regular facebook token for app version <=1.0.4
+        
+        if (isset($request->tokenType) && $request->tokenType == "auth0") {
+	        
+	        
+	        return ['token' => $user_token];
+        }
+        
         //get their profile info from their facebook token
 		$fb_user = Socialite::driver('facebook')->userFromToken($request->token);
 		
