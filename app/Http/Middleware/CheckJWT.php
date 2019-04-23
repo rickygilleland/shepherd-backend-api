@@ -7,11 +7,10 @@ class CheckJWT {
 
     public function handle($request, Closure $next) {
 	    
-	    if (!isset($request->token)) {
+	    $accessToken = $request->bearerToken();        
+        if (empty($accessToken)) {
 	        return ['error' => 'missing token'];
         }
-
-        $accessToken = $request->token;
 
         $laravelConfig = config('laravel-auth0');
         $jwtConfig = [
