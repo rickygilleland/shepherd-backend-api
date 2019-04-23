@@ -17,6 +17,8 @@ Route::post('/token', 'ApiTokenController@token', function($request) {
 	
 });
 
+//app version <=1.0.4 routes
+
 Route::middleware('auth:api')->post('/user', 'UsersController@get_user', function ($request) {
 	
 });
@@ -64,4 +66,50 @@ Route::middleware('auth:api')->post('/vote', 'PostsController@vote', function ($
 	
 });
 
+//app version >1.1.0 routes
+Route::middleware('jwt')->post('/1.1.0/user', 'UsersController@get_user', function ($request) {
+	
+});
 
+Route::middleware('jwt')->post('/1.1.0/posts', 'PostsController@get_posts', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/post', 'PostsController@add_post', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/post/get', 'PostsController@get_post', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/post/report', 'PostsController@report_post', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/post/delete', 'PostsController@delete_post', function ($request) {
+	
+});
+
+
+Route::middleware('jwt')->post('/1.1.0/post/comments', 'PostsController@get_post_comments', function ($request) {
+	
+});
+
+
+Route::middleware('jwt')->post('/1.1.0/comment', 'PostsController@add_comment', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/comment/report', 'PostsController@report_comment', function ($request) {
+	
+});
+
+Route::middleware('jwt')->post('/1.1.0/comment/delete', 'PostsController@delete_comment', function ($request) {
+	
+});
+
+
+Route::middleware('jwt')->post('/1.1.0/vote', 'PostsController@vote', function ($request) {
+	
+});
