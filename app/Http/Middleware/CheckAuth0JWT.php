@@ -24,6 +24,8 @@ class CheckAuth0JWT {
         try {
             $jwtVerifier = new JWTVerifier($jwtConfig);
             $decodedToken = $jwtVerifier->verifyAndDecode($accessToken);
+            
+            print_r($decodedToken); die();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
         }
