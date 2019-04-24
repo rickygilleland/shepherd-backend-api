@@ -3,7 +3,7 @@
 // ...
 use Auth0\SDK\JWTVerifier;
 
-class CheckJWT {
+class CheckAuth0JWT {
 
     public function handle($request, Closure $next) {
         $accessToken = $request->bearerToken();
