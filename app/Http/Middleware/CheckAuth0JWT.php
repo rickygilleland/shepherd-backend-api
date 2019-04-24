@@ -20,6 +20,8 @@ class CheckAuth0JWT {
             'valid_audiences' => [$laravelConfig['api_identifier']],
             'supported_algs' => $laravelConfig['supported_algs'],
         ];
+        
+        print_r($accessToken);die();
 
         try {
             $jwtVerifier = new JWTVerifier($jwtConfig);
