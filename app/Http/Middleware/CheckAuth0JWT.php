@@ -17,13 +17,10 @@ class CheckAuth0JWT {
         $laravelConfig = config('laravel-auth0');
         $jwtConfig = [
             'authorized_iss' => $laravelConfig['authorized_issuers'],
-            'valid_audiences' => [$laravelConfig['api_identifier']],
+            'valid_audiences' => $laravelConfig['api_identifier'],
             'supported_algs' => $laravelConfig['supported_algs'],
         ];
         
-        
-        print_r($jwtConfig); die();
-
         try {
             $jwtVerifier = new JWTVerifier($jwtConfig);
             $decodedToken = $jwtVerifier->verifyAndDecode($accessToken);
