@@ -21,7 +21,8 @@ class CheckAuth0JWT {
             'supported_algs' => $laravelConfig['supported_algs'],
         ];
         
-        print_r($accessToken);die();
+        
+        print_r($jwtConfig); die();
 
         try {
             $jwtVerifier = new JWTVerifier($jwtConfig);
