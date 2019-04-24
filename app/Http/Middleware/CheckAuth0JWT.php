@@ -1,6 +1,8 @@
 <?php
 // app/Http/Middleware/CheckJWT.php
 // ...
+namespace App\Http\Middleware;
+
 use Auth0\SDK\JWTVerifier;
 
 class CheckAuth0JWT {
