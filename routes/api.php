@@ -71,6 +71,10 @@ Route::middleware(['jwt'])->post('/1.1.0/user', 'UsersController@get_user', func
 	
 });
 
+Route::middleware(['jwt'])->post('/1.1.0/user/profile_complete', 'UsersController@check_if_profile_complete', function ($request) {
+	
+});
+
 Route::middleware(['jwt'])->post('/1.1.0/posts', 'PostsController@get_posts', function ($request) {
 	
 });

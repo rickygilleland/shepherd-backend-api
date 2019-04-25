@@ -72,5 +72,30 @@ class UsersController extends Controller
 		
 	}
 	
+	public function check_if_profile_complete(Request $request)
+	{
+		
+		$user = \App\User::where('id', Auth::id())->first();
+		
+		if (!$user) {
+			return ['success' => false];
+		}
+		
+		$profile_complete = true;
+		
+		if ($user->first_name == null) {
+			$profile_complete = false;
+		}
+		
+		if ($user->last_name == null) {
+			$profile_complete = false;
+		}
+		
+		return ['profile_complete' => $profile_complete];
+		
+	}
+	
+
+	
     
 }
