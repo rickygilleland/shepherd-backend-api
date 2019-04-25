@@ -31,10 +31,9 @@ class CheckAuth0JWT {
             $jwtVerifier = new JWTVerifier($jwtConfig);
             $decodedToken = $jwtVerifier->verifyAndDecode($accessToken);
             
-            print_r($laravelConfig); die();
-            
+
             $auth0_api = new Authentication(
-			    $laravelConfig['domain'],
+			    'https://shepherdapp.auth0.com/',
 			    $laravelConfig['client_id'],
 			    $laravelConfig['client_secret'],
 			);
