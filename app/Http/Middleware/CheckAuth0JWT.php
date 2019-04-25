@@ -33,7 +33,7 @@ class CheckAuth0JWT {
             
 
             $auth0_api = new Authentication(
-			    'shepherdapp.auth0.com/',
+			    $laravelConfig['domain'],
 			    $laravelConfig['client_id'],
 			    $laravelConfig['client_secret'],
 			);
