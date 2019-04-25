@@ -38,9 +38,8 @@ class CheckAuth0JWT {
 			    $laravelConfig['client_secret'],
 			);
 			
-			$auth0_user = $auth0_api->userinfo($accessToken);
-			
-			print_r($auth0_user); die();			
+			$auth0_user = (object)$auth0_api->userinfo($accessToken);
+						
 			$user = \App\User::where('provider_id', $auth0_user->sub);
 			
 			if (!$user) {
