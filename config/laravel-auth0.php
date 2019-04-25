@@ -59,7 +59,7 @@ return array(
     |   This is used to verify the decoded tokens when using RS256
     |
     */
-    'authorized_issuers'  => [ env( 'AUTH0_DOMAIN' ) ],
+    'authorized_issuers'  => [ env( 'AUTH0_AUTH_ISSUERS' ) ],
 
     /*
     |--------------------------------------------------------------------------
