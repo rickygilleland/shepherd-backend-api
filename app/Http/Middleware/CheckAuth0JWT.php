@@ -40,6 +40,7 @@ class CheckAuth0JWT {
 			
 			$auth0_user = $auth0_api->userinfo($accessToken);
 			
+			print_r($auth0_user); die();			
 			$user = \App\User::where('provider_id', $auth0_user->sub);
 			
 			if (!$user) {
