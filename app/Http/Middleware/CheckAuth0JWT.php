@@ -40,7 +40,20 @@ class CheckAuth0JWT {
 			
 			$auth0_user = (object)$auth0_api->userinfo($accessToken);
 						
-			$user = \App\User::where('provider_id', $auth0_user->sub);
+			$user = \App\User::where('provider_id', $auth0_user->sub)->first();
+			
+			if (!$user) {
+				//check if we have them by their email
+				$user = \App\User::where('email', $auth0_user->email)->first();
+				
+				
+				if ($user) {
+					$user->provider = "auth0";
+					$user->provider_id = $auth0_user->sub;
+					$user->save();
+				}
+				
+			}
 			
 			if (!$user) {
 				$user = new \App\User();
