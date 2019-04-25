@@ -38,23 +38,26 @@ class CheckAuth0JWT {
 			    $laravelConfig['client_secret'],
 			);
 			
-			$user = $auth0_api->userinfo($accessToken);
-            
-            print_r($user); die();
-            
-            if (!$user) {
-	            return \Response::make('Unauthorized', 401);
-	        }
-	        if (time() > $user->exp) {
-	            return new JsonResponse([
-	                'message'   =>  'Token expired'
-	            ], 401);
-	        }
+			$auth0_user = $auth0_api->userinfo($accessToken);
+			
+			$user = \App\User::where('provider_id', $auth0_user->sub);
+			
+			if (!$user) {
+				$user = new \App\User();
+		        $user->email = $auth0_user->email;
+		        $user->name = $auth0_user->name;
+		        $user->first_name = $auth0_user->given_name;
+		        $user->last_name = $auth0_user->family_name;
+		        $user->avatar = $auth0_user->picture;
+		        $user->provider = "auth0";
+		        $user->provider_id = $auth0_user->sub;
+		        
+		        $user->save();
+			}
 
 	        // lets log the user in so it is accessible
 	        \Auth::login($user);
             
-            print_r($decodedToken); die();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 401);
         }
