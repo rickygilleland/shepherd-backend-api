@@ -43,7 +43,7 @@ class CheckAuth0JWT {
 			$user = \App\User::where('provider_id', $auth0_user->sub)->first();
 			
 			$is_facebook = false;
-			if (strpos($user->sub, "facebook") !== false) {
+			if (strpos($auth0_user->sub, "facebook") !== false) {
 				//this is a facebook login
 				$is_facebook = true;
 			}
