@@ -91,6 +91,8 @@ class UsersController extends Controller
 			$profile_complete = false;
 		}
 		
+		error_log(json_encode($profile_complete));
+		
 		return ['profile_complete' => $profile_complete];
 		
 	}
