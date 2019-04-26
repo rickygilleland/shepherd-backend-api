@@ -66,10 +66,23 @@ class CheckAuth0JWT {
 			
 			if (!$user) {
 				$user = new \App\User();
-		        $user->name = $auth0_user->name;
-		        $user->first_name = $auth0_user->given_name;
-		        $user->last_name = $auth0_user->family_name;
-		        $user->avatar = $auth0_user->picture;
+		        
+		        if (isset($auth0_user->name)) {
+			        $user->name = $auth0_user->name;
+		        }
+		        
+		        if (isset($auth0_user->given_name)) {
+			        $user->first_name = $auth0_user->given_name;
+		        }
+		        
+		        if (isset($auth0_user->family_name)) {
+			        $user->last_name = $auth0_user->family_name;
+		        }
+		        
+		        if (isset($auth0_user->picture)) {
+			        $user->avatar = $auth0_user->picture;
+		        }
+		        
 		        $user->provider = "auth0";
 		        $user->provider_id = $auth0_user->sub;
 		        
