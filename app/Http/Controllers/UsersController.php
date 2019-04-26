@@ -109,6 +109,8 @@ class UsersController extends Controller
 		
 		$user->name = $request->first_name . " " . $request->last_name;
 		
+		$user->avatar = "https://cdn.auth0.com/avatars/".$user->name[0]."png";
+		
 		$user->save();
 		
 		return ['success' => true];
