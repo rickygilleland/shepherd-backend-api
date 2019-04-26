@@ -95,6 +95,24 @@ class UsersController extends Controller
 		
 	}
 	
+	public function complete_profile(Request $request)
+	{
+		
+		$user = \App\User::where('id', Auth::id())->first();
+		
+		if (!$user) {
+			return ['success' => false];
+		}
+		
+		$user->first_name = $request->first_name;
+		$user->last_name = $request->last_name;
+		
+		$user->save();
+		
+		return ['success' => true];
+		
+	}
+	
 
 	
     

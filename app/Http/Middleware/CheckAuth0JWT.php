@@ -67,6 +67,8 @@ class CheckAuth0JWT {
 		        
 		        $user->save();
 			}
+			
+			//check if we could complete some of the profile with their facebook info
 
 	        // lets log the user in so it is accessible
 	        \Auth::login($user);
