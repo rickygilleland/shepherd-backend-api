@@ -91,8 +91,6 @@ class UsersController extends Controller
 			$profile_complete = false;
 		}
 		
-		error_log(json_encode($profile_complete));
-		
 		return ['profile_complete' => $profile_complete];
 		
 	}
@@ -108,6 +106,8 @@ class UsersController extends Controller
 		
 		$user->first_name = $request->first_name;
 		$user->last_name = $request->last_name;
+		
+		$user->name = $request->first_name . " " . $request->last_name;
 		
 		$user->save();
 		
