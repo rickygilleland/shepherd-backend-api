@@ -31,6 +31,7 @@ class CheckAuth0JWT {
             $jwtVerifier = new JWTVerifier($jwtConfig);
             $decodedToken = $jwtVerifier->verifyAndDecode($accessToken);
             
+            print_r($decodedToken); die();
 
             $auth0_api = new Authentication(
 			    $laravelConfig['domain'],
