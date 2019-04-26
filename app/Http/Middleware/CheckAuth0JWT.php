@@ -94,6 +94,7 @@ class CheckAuth0JWT {
 	        \Auth::login($user);
             
         } catch (\Exception $e) {
+	        error_log($e->getMessage());
             return response()->json(['message' => $e->getMessage()], 401);
         }
 
