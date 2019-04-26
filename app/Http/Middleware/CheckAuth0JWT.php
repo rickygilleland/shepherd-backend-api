@@ -76,7 +76,6 @@ class CheckAuth0JWT {
 		        $user->save();
 			}
 
-			return response()->json(['message' => "testing"], 401);
 
 	        // lets log the user in so it is accessible
 	        \Auth::login($user);
