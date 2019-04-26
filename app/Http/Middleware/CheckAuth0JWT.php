@@ -31,23 +31,32 @@ class CheckAuth0JWT {
             $jwtVerifier = new JWTVerifier($jwtConfig);
             $decodedToken = $jwtVerifier->verifyAndDecode($accessToken);
             
-            print_r($decodedToken); die();
+            //check if we already know about this user from the token
+            $user = \App\User::where('provider_id', $decodedToken->sub)->first();
+            
+            if ($user) {
+	            print_r("known user"); die();
+            }
+            
+            $is_facebook = false;
+            
+            if (!$user) {
+	            //this a new user, so get their info from auth0
+		            $auth0_api = new Authentication(
+				    $laravelConfig['domain'],
+				    $laravelConfig['client_id'],
+				    $laravelConfig['client_secret'],
+				);
+				
+				$auth0_user = (object)$auth0_api->userinfo($accessToken);
+				
+				if (strpos($auth0_user->sub, "facebook") !== false) {
+					//this is a facebook login
+					$is_facebook = true;
+				}
+            }
 
-            $auth0_api = new Authentication(
-			    $laravelConfig['domain'],
-			    $laravelConfig['client_id'],
-			    $laravelConfig['client_secret'],
-			);
 			
-			$auth0_user = (object)$auth0_api->userinfo($accessToken);
-						
-			$user = \App\User::where('provider_id', $auth0_user->sub)->first();
-			
-			$is_facebook = false;
-			if (strpos($auth0_user->sub, "facebook") !== false) {
-				//this is a facebook login
-				$is_facebook = true;
-			}
 			
 			if (!$user && $is_facebook) {
 				//check if we have them by their facebook id
