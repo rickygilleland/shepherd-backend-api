@@ -42,9 +42,18 @@ class CheckAuth0JWT {
 						
 			$user = \App\User::where('provider_id', $auth0_user->sub)->first();
 			
-			if (!$user) {
-				//check if we have them by their email
-				$user = \App\User::where('email', $auth0_user->email)->first();
+			$is_facebook = false;
+			if (strpos($user->sub, "facebook") !== false) {
+				//this is a facebook login
+				$is_facebook = true;
+			}
+			
+			if (!$user && $is_facebook) {
+				//check if we have them by their facebook id
+				$facebook_id = explode("|", $auth0_user->sub);
+				$facebook_id = $facebook_id[1];
+				
+				$user = \App\User::where('provider_id', $facebook_id)->first();
 				
 				
 				if ($user) {
@@ -57,7 +66,6 @@ class CheckAuth0JWT {
 			
 			if (!$user) {
 				$user = new \App\User();
-		        $user->email = $auth0_user->email;
 		        $user->name = $auth0_user->name;
 		        $user->first_name = $auth0_user->given_name;
 		        $user->last_name = $auth0_user->family_name;
@@ -67,8 +75,8 @@ class CheckAuth0JWT {
 		        
 		        $user->save();
 			}
-			
-			//check if we could complete some of the profile with their facebook info
+
+			return response()->json(['message' => "testing"], 401);
 
 	        // lets log the user in so it is accessible
 	        \Auth::login($user);
