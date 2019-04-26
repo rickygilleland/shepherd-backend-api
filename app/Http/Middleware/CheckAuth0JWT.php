@@ -67,7 +67,7 @@ class CheckAuth0JWT {
 			if (!$user) {
 				$user = new \App\User();
 		        
-		        if (isset($auth0_user->name)) {
+		        if (isset($auth0_user->name) && strpos($auth0_user->sub, "sms") === false) {
 			        $user->name = $auth0_user->name;
 		        }
 		        
