@@ -33,11 +33,7 @@ class CheckAuth0JWT {
             
             //check if we already know about this user from the token
             $user = \App\User::where('provider_id', $decodedToken->sub)->first();
-            
-            if ($user) {
-	            print_r("known user"); die();
-            }
-            
+
             $is_facebook = false;
             
             if (!$user) {
