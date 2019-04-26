@@ -64,6 +64,8 @@ class CheckAuth0JWT {
 				
 			}
 			
+			error_log(json_encode($auth0_user));
+			
 			if (!$user) {
 				$user = new \App\User();
 		        
